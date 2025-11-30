@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import blacklisttokenModel from "../models/blacklisttoken.model.js";
 
 // Register a new user
 const registerUser = async (req, res) => {
@@ -25,12 +26,14 @@ const registerUser = async (req, res) => {
 
     await newUser.save();
 
+    delete newUser._doc.password;
+
     const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
     res.cookie("token", token);
 
-    res.status(201).json({ message: "User registered successfully" });
+    res.status(201).json({ token, newUser });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }

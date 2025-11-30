@@ -13,7 +13,14 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    select: false,
   },
+});
+
+//remove password string after saving data
+userSchema.post("save", function (doc, next) {
+  doc.password = "";
+  next();
 });
 
 const User = mongoose.model("user", userSchema);
