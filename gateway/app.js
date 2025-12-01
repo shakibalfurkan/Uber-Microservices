@@ -6,6 +6,7 @@ const PORT = 3000;
 
 app.use("/user", expressProxy("http://localhost:3001"));
 app.use("/captain", expressProxy("http://localhost:3002"));
+app.use("/ride", expressProxy("http://localhost:3003"));
 
 app.listen(PORT, () => {
   console.log(`API Gateway server is running at http://localhost:${PORT}`);
